@@ -14,7 +14,7 @@ async function query(filterBy) {
         const todos = await dbService.runSQL(sql)
         if (filterBy.q) {
             return todos.filter((todo) => {
-                return todo.todoName.toLowerCase().includes(filterBy.q.toLowerCase())
+                return todo.title.toLowerCase().includes(filterBy.q.toLowerCase())
             })
         } else {
             return todos
@@ -38,10 +38,10 @@ async function getTodoById(todoId) {
 async function addTodo(todo) {
     try {
         // todo.id = makeId(20)
-        todo.id = Math.floor(Math.random() * 100)
+        todo._id = Math.floor(Math.random() * 100)
         var sql = `INSERT INTO todo 
-        (id, todoName) VALUES 
-        ('${todo.id}', '${todo.todoName}')`;
+        (_id, title) VALUES 
+        ('${todo._id}', '${todo.title}')`;
         await dbService.runSQL(sql);
         return todo
     } catch (err) {
@@ -52,12 +52,12 @@ async function addTodo(todo) {
 async function updateTodo(todo) {
     try {
         var sql = `UPDATE todo SET
-        id = '${todo.id}',
-        todoName = '${todo.todoName}'
-        WHERE todo.id = '${todo.id}'`;
+        _id = '${todo._id}',
+        title = '${todo.title}'
+        WHERE todo._id = '${todo._id}'`;
         var okPacket = await dbService.runSQL(sql);
         if (okPacket.affectedRows !== 0) return todo;
-        throw new Error(`No todo updated - todo id ${todo.id}`);
+        throw new Error(`No todo updated - todo id ${todo._id}`);
     } catch (err) {
         console.log('err:', err)
     }
@@ -65,7 +65,7 @@ async function updateTodo(todo) {
 
 async function removeTodo(todoId) {
     try {
-        var sql = `DELETE FROM todo WHERE id = '${todoId}'`;
+        var sql = `DELETE FROM todo WHERE _id = '${todoId}'`;
         const res = await dbService.runSQL(sql)
             .then(okPacket => okPacket.affectedRows === 1
                 ? okPacket
@@ -76,7 +76,7 @@ async function removeTodo(todoId) {
 }
 
 function _readyForSend(todo) {
-    todo.todoName = JSON.parse(todo.todoName)
+    todo.title = JSON.parse(todo.title)
     return todo;
 }
 
