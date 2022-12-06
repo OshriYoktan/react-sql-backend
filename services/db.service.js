@@ -2,10 +2,10 @@ var mysql = require('mysql');
 
 var pool = mysql.createPool({
     connectionLimit: 100,
-    host: '127.0.0.1',
-    user: 'root',
-    // password: '1234',
-    database: 'fruit_db'
+    host: 'sql6.freesqldatabase.com',
+    user: 'sql6583091',
+    password: 'zifZV6kfFD',
+    database: 'sql6583091'
 });
 
 
